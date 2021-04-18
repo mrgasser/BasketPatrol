@@ -1,0 +1,4 @@
+TODO
+1. add basketball and hoop
+2. change background (640 x 480)
+3. add countdown for timer
