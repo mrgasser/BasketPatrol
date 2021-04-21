@@ -100,9 +100,8 @@ class Play extends Phaser.Scene {
             this.p1basketball.reset();
             this.p1Score += 1;
             this.scoreText.text = this.p1Score;
-            this.sound.play('sfx_basket');
+            this.sound.play('sfx_basket');r
         }
-
     }
 
     checkCollision(basketball, basket) {
