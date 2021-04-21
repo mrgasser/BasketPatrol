@@ -4,7 +4,7 @@ class Basket extends Phaser.GameObjects.Sprite {
 
         // add to existing scene
         scene.add.existing(this);
-        this.movesSpeed = 0;
+        this.movesSpeed = game.settings.basketSpeed;
         this.start = true;
         this.movingLeft = false;
     }

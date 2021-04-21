@@ -4,28 +4,17 @@ class Play extends Phaser.Scene {
     }
     
     preload() {
-
+        // load sprites and images
         this.load.image('basketball', './assets/basketball.png');
         this.load.image('basket', './assets/Basket.png');
         this.load.image('court', "./assets/court.png");
         this.load.image('gameover', "./assets/gameover.png");
 
-        //load spritesheet
-        this.load.spritesheet('explosion', './assets/explosion.png', {
-            frameWidth: 64,
-            frameHeight: 32,
-            startFrame: 0,
-            endFrame: 9
-        });
     }
 
     create() {
         //place court background
         this.court = this.add.tileSprite(0, 0, 640, 480, 'court').setOrigin(0, 0);
-
-        // // green UI background
-        // this.add.rectangle(0, boarderUISize + boarderPadding, game.config.width, 
-        // boarderUISize * 2, 0x00FF00).setOrigin(0, 0);
         
         //white boards
         //top rectangle
@@ -41,9 +30,9 @@ class Play extends Phaser.Scene {
         this.add.rectangle(game.config.width - boarderUISize, 0, boarderUISize, 
         game.config.height, 0xFFFFFF).setOrigin(0, 0);
         
-        //add basketball (player 1)
+        //add basketball (player 1) 
         this.p1basketball = new Basketball(this, game.config.width / 2,
-        game.config.height - boarderUISize - boarderPadding, 'basketball').setOrigin(0.5, 0);
+        game.config.height - boarderUISize - boarderPadding - 20, 'basketball').setOrigin(0.5, 0);
 
         //add Basket
         this.basket = new Basket(this, game.config.width/2, boarderUISize + boarderPadding,
@@ -55,26 +44,15 @@ class Play extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        // configure animation
-        this.anims.create({
-            key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion',{
-                start: 0,
-                end: 9,
-                first: 0
-            }),
-            frameRate: 30
-        });
-
         //initialize score
         this.p1Score = 0;
 
         // Display Score
         let scoreConfig = {
-            fontFamily: 'Courier',
+            fontFamily: 'Droid Sans',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            //backgroundColor: '#FFFFFF',
+            color: '#000000',
             align: 'right',
             padding: {
                 top: 5,
@@ -82,7 +60,9 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(boarderUISize + boarderPadding, boarderUISize + boarderPadding*2,
+        this.tt = "SCORE: " + this.p1Score;
+        console.log(this.tt);
+        this.scoreText = this.add.text(boarderUISize + boarderPadding, -1,
         this.p1Score, scoreConfig);
 
         // GAME OVER flag
@@ -92,6 +72,8 @@ class Play extends Phaser.Scene {
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.gmOverText = this.add.tileSprite(0, 0, 640, 480, 'gameover').setOrigin(0, 0);
             this.gameOver = true;
+            this.sound.play('sfx_buzzer');
+
         }, null, this);
     }
 
@@ -118,8 +100,10 @@ class Play extends Phaser.Scene {
         //check collision
         if (this.checkCollision(this.p1basketball, this.basket)) {
             this.p1basketball.reset();
+            this.p1Score += 1;
+            this.scoreText.text = this.p1Score;
             console.log('HIT!!!')
-            // add explosion
+            this.sound.play('sfx_basket')
         }
 
     }
@@ -136,21 +120,4 @@ class Play extends Phaser.Scene {
         }
 
     }
-
-    // shipExplode(ship) {
-    //     //temporarily hide ship
-    //     ship.alpha = 0;
-    //     // create explosion at ship's position
-    //     let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-    //     boom.anims.play('explode');
-    //     boom.on('animationcomplete', () => {
-    //         ship.reset();
-    //         ship.alpha = 1;
-    //         boom.destroy();
-    //     });
-    //     // Score add and repaint
-    //     this.p1Score += ship.points;
-    //     this.scoreLeft.text = this.p1Score;
-    //     this.sound.play('sfx_explosion');
-    // }
 }

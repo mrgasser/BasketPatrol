@@ -5,9 +5,9 @@ class Basketball extends Phaser.GameObjects.Sprite {
 
         // add object to the existing scene
         scene.add.existing(this);
-        this.isFiring = false;          // track rocket firing status
-        this.moveSpeed = 2;             //rocket movement speed
-        this.sfxRocket = scene.sound.add('sfx_rocket'); // add rocket sfx
+        this.isFiring = false;          // track ball firing
+        this.moveSpeed = 3;             // ball movement speed
+        this.sfxBall = scene.sound.add('sfx_ball'); // add ball sfx
     }
 
     update() {
@@ -23,15 +23,15 @@ class Basketball extends Phaser.GameObjects.Sprite {
         // fire button
         if (Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring) {
             this.isFiring = true;
-            this.sfxRocket.play(); //play sfx
+            this.sfxBall.play(); //play sfx
         }
         // if fired move the rockey up
-        if (this.isFiring && this.y >= boarderUISize * 3 ) {
+        if (this.isFiring && this.y >= boarderUISize) {
             this.y -= this.moveSpeed;
         }
 
         // reset on a miss
-        if (this.y <= boarderUISize * 3) {
+        if (this.y <= boarderUISize) {
             this.reset();
         }
     }
@@ -39,6 +39,6 @@ class Basketball extends Phaser.GameObjects.Sprite {
     // Reset rocket to ground
     reset() {
         this.isFiring = false;
-        this.y = game.config.height - boarderUISize - boarderPadding;
+        this.y = game.config.height - boarderUISize - boarderPadding - 20;
     }
 }

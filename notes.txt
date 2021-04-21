@@ -1,4 +1,5 @@
 TODO
-1. add basketball and hoop
-2. change background (640 x 480)
-3. add countdown for timer
+
+1. Scoreboard
+2. Time counter
+3. Fix fire range of ball
