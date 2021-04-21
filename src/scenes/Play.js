@@ -4,11 +4,10 @@ class Play extends Phaser.Scene {
     }
     
     preload() {
-        //load images/tile sprites
-        this.load.image('rocket', './assets/rocket.png');
-        this.load.image('spaceship', './assets/spaceship.png');
-        this.load.image('starfield', './assets/starfield.png');
+
         this.load.image('basketball', './assets/basketball.png');
+        this.load.image('basket', './assets/Basket.png');
+        this.load.image('court', "./assets/court.png");
 
         //load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {
@@ -20,9 +19,8 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        //place starfield
-        this.starfield = this.add.tileSprite(0, 0, 640, 480, 
-        'starfield').setOrigin(0, 0);
+        //place court background
+        this.court = this.add.tileSprite(0, 0, 640, 480, 'court').setOrigin(0, 0);
 
         // green UI background
         this.add.rectangle(0, boarderUISize + boarderPadding, game.config.width, 
@@ -41,19 +39,13 @@ class Play extends Phaser.Scene {
         this.add.rectangle(game.config.width - boarderUISize, 0, boarderUISize, 
         game.config.height, 0xFFFFFF).setOrigin(0, 0);
         
-
-        //add rocket (player 1)
+        //add basketball (player 1)
         this.p1basketball = new Basketball(this, game.config.width / 2,
         game.config.height - boarderUISize - boarderPadding, 'basketball').setOrigin(0.5, 0);
 
-        // add the spaceships (x3)
-        this.ship01 = new Spaceship(this, game.config.width + boarderUISize * 6,
-            boarderUISize * 4, 'spaceship', 0, 30).setOrigin(0, 0);
-        this.ship02 = new Spaceship(this, game.config.width + boarderUISize * 3,
-            boarderUISize * 5 + boarderPadding*2, 'spaceship', 0, 20).setOrigin(0, 0);
-        this.ship03 = new Spaceship(this, game.config.width, 
-            boarderUISize * 6 + boarderPadding * 4, 'spaceship', 0, 10).setOrigin(0, 0);
-
+        //add Basket
+        this.basket = new Basket(this, game.config.width/2, boarderUISize + boarderPadding,
+        'basket').setOrigin(0, 0);
 
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -105,7 +97,6 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        this.starfield.tilePositionX -= starSpeed;
 
         //check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
@@ -120,10 +111,12 @@ class Play extends Phaser.Scene {
         if (!this.gameOver) {
             // update rocket
             this.p1basketball.update();
+            //update basket
+            this.basket.update();
             // update spaceships
-            this.ship01.update();
-            this.ship02.update();
-            this.ship03.update();
+            // this.ship01.update();
+            // this.ship02.update();
+            // this.ship03.update();
         }
 
         //check collisions
@@ -141,12 +134,12 @@ class Play extends Phaser.Scene {
         //}
     }
 
-    checkCollision(rocket, ship) {
+    checkCollision(basketball, basket) {
         //simple AABB chekcing
-        if (rocket.x < ship.x + ship.width &&
-            rocket.x + rocket.width > ship.x &&
-            rocket.y < ship.y + ship.height &&
-            rocket.height + rocket.y > ship.y) {
+        if (basketball.x < basket.x + basket.width &&
+            basketball.x + basketball.width > basket.x &&
+            basketball.y < basket.y + basket.height &&
+            basketball.height + basketball.y > basket.y) {
                 return true;
         } else {
             return false;
