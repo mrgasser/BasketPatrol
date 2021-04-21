@@ -60,8 +60,6 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.tt = "SCORE: " + this.p1Score;
-        console.log(this.tt);
         this.scoreText = this.add.text(boarderUISize + boarderPadding, -1,
         this.p1Score, scoreConfig);
 
@@ -102,8 +100,7 @@ class Play extends Phaser.Scene {
             this.p1basketball.reset();
             this.p1Score += 1;
             this.scoreText.text = this.p1Score;
-            console.log('HIT!!!')
-            this.sound.play('sfx_basket')
+            this.sound.play('sfx_basket');
         }
 
     }

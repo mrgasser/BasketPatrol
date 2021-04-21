@@ -20,9 +20,7 @@ class Basket extends Phaser.GameObjects.Sprite {
         // movement 
         if (this.movingLeft) {
             this.x -= this.movesSpeed; // move left
-            console.log("Moving left!");
         } else {
-            console.log("Moving right!");
             this.x += this.movesSpeed; // move right
         }
 
