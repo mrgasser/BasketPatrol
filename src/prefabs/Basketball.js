@@ -26,12 +26,12 @@ class Basketball extends Phaser.GameObjects.Sprite {
             this.sfxRocket.play(); //play sfx
         }
         // if fired move the rockey up
-        if (this.isFiring && this.y >= boarderUISize * 3 + boarderPadding) {
+        if (this.isFiring && this.y >= boarderUISize * 3 ) {
             this.y -= this.moveSpeed;
         }
 
         // reset on a miss
-        if (this.y <= boarderUISize * 3 + boarderPadding) {
+        if (this.y <= boarderUISize * 3) {
             this.reset();
         }
     }

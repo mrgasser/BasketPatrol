@@ -8,6 +8,7 @@ class Play extends Phaser.Scene {
         this.load.image('basketball', './assets/basketball.png');
         this.load.image('basket', './assets/Basket.png');
         this.load.image('court', "./assets/court.png");
+        this.load.image('gameover', "./assets/gameover.png");
 
         //load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {
@@ -22,9 +23,10 @@ class Play extends Phaser.Scene {
         //place court background
         this.court = this.add.tileSprite(0, 0, 640, 480, 'court').setOrigin(0, 0);
 
-        // green UI background
-        this.add.rectangle(0, boarderUISize + boarderPadding, game.config.width, 
-        boarderUISize * 2, 0x00FF00).setOrigin(0, 0);
+        // // green UI background
+        // this.add.rectangle(0, boarderUISize + boarderPadding, game.config.width, 
+        // boarderUISize * 2, 0x00FF00).setOrigin(0, 0);
+        
         //white boards
         //top rectangle
         this.add.rectangle(0, 0, game.config.width, boarderUISize, 0xFFFFFF).setOrigin
@@ -88,10 +90,7 @@ class Play extends Phaser.Scene {
         // 60 second play clock
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER',
-            scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu',
-            scoreConfig).setOrigin(0.5);
+            this.gmOverText = this.add.tileSprite(0, 0, 640, 480, 'gameover').setOrigin(0, 0);
             this.gameOver = true;
         }, null, this);
     }
@@ -113,25 +112,16 @@ class Play extends Phaser.Scene {
             this.p1basketball.update();
             //update basket
             this.basket.update();
-            // update spaceships
-            // this.ship01.update();
-            // this.ship02.update();
-            // this.ship03.update();
+
         }
 
-        //check collisions
-        // if (this.checkCollision(this.p1Rocket, this.ship03)) {
-        //     this.p1Rocket.reset();
-        //     this.shipExplode(this.ship03);
-        // }
-        // if (this.checkCollision(this.p1Rocket, this.ship02)) {
-        //     this.p1Rocket.reset();
-        //     this.shipExplode(this.ship02);
-        // }
-        // if (this.checkCollision(this.p1Rocket, this.ship01)) {
-        //     this.p1Rocket.reset();
-        //     this.shipExplode(this.ship01);
-        //}
+        //check collision
+        if (this.checkCollision(this.p1basketball, this.basket)) {
+            this.p1basketball.reset();
+            console.log('HIT!!!')
+            // add explosion
+        }
+
     }
 
     checkCollision(basketball, basket) {
@@ -147,20 +137,20 @@ class Play extends Phaser.Scene {
 
     }
 
-    shipExplode(ship) {
-        //temporarily hide ship
-        ship.alpha = 0;
-        // create explosion at ship's position
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-        boom.anims.play('explode');
-        boom.on('animationcomplete', () => {
-            ship.reset();
-            ship.alpha = 1;
-            boom.destroy();
-        });
-        // Score add and repaint
-        this.p1Score += ship.points;
-        this.scoreLeft.text = this.p1Score;
-        this.sound.play('sfx_explosion');
-    }
+    // shipExplode(ship) {
+    //     //temporarily hide ship
+    //     ship.alpha = 0;
+    //     // create explosion at ship's position
+    //     let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+    //     boom.anims.play('explode');
+    //     boom.on('animationcomplete', () => {
+    //         ship.reset();
+    //         ship.alpha = 1;
+    //         boom.destroy();
+    //     });
+    //     // Score add and repaint
+    //     this.p1Score += ship.points;
+    //     this.scoreLeft.text = this.p1Score;
+    //     this.sound.play('sfx_explosion');
+    // }
 }
